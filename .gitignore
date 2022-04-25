@@ -14,3 +14,4 @@ notes
 .tox
 quarry.egg-info
 docs/networking/packet_names.rst
+.vscode
