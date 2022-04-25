@@ -46,9 +46,9 @@ def run(args):
 
 def main(argv):
     parser = ProfileCLI.make_parser()
-    parser.add_argument("host")
-    parser.add_argument("-p", "--port", default=25565, type=int)
-    parser.add_argument("-o", "--output-path")
+    parser.add_argument("-ho", "--host", default="192.168.1.5")
+    parser.add_argument("-p", "--port", default=12345, type=int)
+    parser.add_argument("-o", "--output-path", default="C:/data_pack.bin")
     args = parser.parse_args(argv)
 
     run(args)

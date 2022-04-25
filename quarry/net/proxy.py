@@ -70,7 +70,7 @@ class Bridge(PacketDispatcher):
     """
 
     upstream_factory_class = UpstreamFactory
-    log_level = logging.INFO
+    log_level = logging.DEBUG
 
     logger = None
     buff_type = None

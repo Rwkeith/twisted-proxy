@@ -5,8 +5,11 @@ Allows a client to turn on "quiet mode" which hides chat messages
 """
 
 from twisted.internet import reactor
+from twisted.python import log
 from quarry.types.uuid import UUID
 from quarry.net.proxy import DownstreamFactory, Bridge
+
+import sys, warnings
 
 
 class QuietBridge(Bridge):
@@ -95,19 +98,21 @@ class QuietDownstreamFactory(DownstreamFactory):
 
 def main(argv):
     # Parse options
+    log.startLogging(sys.stdout)
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-a", "--listen-host", default="", help="address to listen on")
+    parser.add_argument("-a", "--listen-host", default="0.0.0.0", help="address to listen on")
     parser.add_argument("-p", "--listen-port", default=25565, type=int, help="port to listen on")
-    parser.add_argument("-b", "--connect-host", default="127.0.0.1", help="address to connect to")
-    parser.add_argument("-q", "--connect-port", default=25565, type=int, help="port to connect to")
+    parser.add_argument("-b", "--connect-host", default="192.168.1.5", help="address to connect to")
+    parser.add_argument("-q", "--connect-port", default=12345, type=int, help="port to connect to")
     args = parser.parse_args(argv)
 
     # Create factory
     factory = QuietDownstreamFactory()
     factory.connect_host = args.connect_host
     factory.connect_port = args.connect_port
-
+    # will throw an Auth OpenSSL error if not setting online_mode to false.  Supply credentials if you need to do online
+    factory.online_mode = False
     # Listen
     factory.listen(args.listen_host, args.listen_port)
     reactor.run()
